@@ -1,9 +1,8 @@
 import { fetchMetadata } from "frames.js/next";
-
+ 
 export async function generateMetadata() {
   return {
-    title: "Cover Page",
-    // provide a full URL to your /frames endpoint
+    title: "My Page",
     other: await fetchMetadata(
       new URL(
         "/frames",
@@ -14,7 +13,7 @@ export async function generateMetadata() {
     ),
   };
 }
-
+ 
 export default function Page() {
   return <span>My existing page</span>;
 }
