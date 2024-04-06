@@ -5,13 +5,17 @@ import { getProposalMetadata } from "../api/supabase"
 import { prepareCoverFrame } from "./cover/cover";
 import { prepareLoreFrame } from  "./lore/lore"
 
-export type State = {
+type State = {
     title: string;
     n_sentences: number;
 };
 
-export const frames = createFrames<State>({
+const frames = createFrames<State>({
     basePath: "/frames",
+    initialState: {
+        title: "",
+        n_sentences: 0,
+    },
 });
 
 // Frame entry point
@@ -33,7 +37,7 @@ const handleRequest = frames(async (ctx) => {
         return badRequestFrame('Bad frame URL. proposalId parameter must be provided as string. eg. "4bv3rK5qEhoFmFRtxJp2fh5342uwh3VKUfLbqkyuzYYV"')
     }
 
-    // store 2 params in ctx for convenience of passing
+    // store 2 params in ctx to simplify param passing
     // this is not standard pattern
     ctx.chain = chain
     ctx.proposalId = proposalId
@@ -47,16 +51,14 @@ const handleRequest = frames(async (ctx) => {
 
     // If id=n, display the n'th chunk of the lore story
     // ensure ctx is loaded
-    if (!ctx.state) {
+    if (ctx.state.n_sentences == 0) {
         console.log("Reloading metadata")
         const data = await getProposalMetadata(
             chain,
             proposalId,
         )
-        ctx.state = {
-            n_sentences: parseInt(data.n_sentences),
-            title: data.title,
-        }
+        ctx.state.n_sentences = parseInt(data.n_sentences)
+        ctx.state.title = data.title
     }
 
     // ensure id is a proper integer
@@ -77,7 +79,7 @@ const handleRequest = frames(async (ctx) => {
     let hideText:boolean = false
     if (hideTextAsString && hideTextAsString === "true")  hideText = true
 
-    // store 2 params in ctx for convenience of passing
+    // store 2 params in ctx to simplify param passing
     // this is not standard pattern
     ctx.id = id
     ctx.hideText = hideText

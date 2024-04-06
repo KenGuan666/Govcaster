@@ -15,6 +15,7 @@ export function coverFrame(ctx:any) {
             <Button
                 action="post"
                 target={{ query: { chain: ctx.chain, proposalId: ctx.proposalId, id: 0, hideText: false } }}
+                key="button"
             >
                 Read Lore
             </Button>,
