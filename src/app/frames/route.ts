@@ -13,7 +13,6 @@ export const frames = createFrames({
 // example cover frame link: /frames?chain=solana&proposalId=4bv3rK5qEhoFmFRtxJp2fh5342uwh3VKUfLbqkyuzYYV
 // example lore frame link: /frames?chain=solana&proposalId=4bv3rK5qEhoFmFRtxJp2fh5342uwh3VKUfLbqkyuzYYV&id=0&showText=true
 const handleRequest = frames(async (ctx) => {
-    console.log(ctx)
     const searchParams = ctx.searchParams
 
     // sanitize params data
@@ -41,7 +40,7 @@ const handleRequest = frames(async (ctx) => {
 
     // If id=n, display the n'th chunk of the lore story
     // ensure ctx is loaded
-    if (!ctx.n_sentence) {
+    if (!ctx.n_sentences) {
         const data = await getProposalMetadata(
             ctx.chain,
             ctx.proposalId,
@@ -67,7 +66,10 @@ const handleRequest = frames(async (ctx) => {
 
     let hideText:boolean = false
     if (hideTextAsString && hideTextAsString === "true")  hideText = true
-    return await loreFrame(ctx)
+
+    ctx.id = id
+    ctx.hideText = hideText
+    return loreFrame(ctx)
 })
 
 export const GET = handleRequest
