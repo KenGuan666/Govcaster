@@ -18,9 +18,10 @@ export async function loreFrame(ctx:any) {
                 {(ctx.hideText ? "Show " : "Hide ") + "Story Text"} 
             </Button>
         ],
+        state: ctx.state,
     }
 
-    if (ctx.id < ctx.n_sentences - 1) {
+    if (ctx.id < ctx.state.n_sentences - 1) {
         // if not on the last frame, provide a button to go to next lore frame
         frame.buttons.push((
             <Button

@@ -2,10 +2,15 @@ import { createFrames } from "frames.js/next";
 
 import { badRequestFrame } from "./bad_request"
 import { getProposalMetadata } from "../api/supabase"
-import { proposalCoverFrame } from "./cover/cover";
-import { loreFrame } from  "./lore"
+import { prepareCoverFrame } from "./cover/cover";
+import { prepareLoreFrame } from  "./lore/lore"
 
-export const frames = createFrames({
+export type State = {
+    title: string;
+    n_sentences: number;
+};
+
+export const frames = createFrames<State>({
     basePath: "/frames",
 });
 
@@ -28,6 +33,8 @@ const handleRequest = frames(async (ctx) => {
         return badRequestFrame('Bad frame URL. proposalId parameter must be provided as string. eg. "4bv3rK5qEhoFmFRtxJp2fh5342uwh3VKUfLbqkyuzYYV"')
     }
 
+    // store 2 params in ctx for convenience of passing
+    // this is not standard pattern
     ctx.chain = chain
     ctx.proposalId = proposalId
 
@@ -35,18 +42,21 @@ const handleRequest = frames(async (ctx) => {
     // If id=null, display the cover page
     const idAsString:string | null = searchParams.id
     if (!idAsString) {
-        return await proposalCoverFrame(ctx)
+        return await prepareCoverFrame(ctx)
     }
 
     // If id=n, display the n'th chunk of the lore story
     // ensure ctx is loaded
-    if (!ctx.n_sentences) {
+    if (!ctx.state) {
+        console.log("Reloading metadata")
         const data = await getProposalMetadata(
-            ctx.chain,
-            ctx.proposalId,
+            chain,
+            proposalId,
         )
-        ctx.n_sentences = parseInt(data.n_sentences)
-        ctx.title = data.title
+        ctx.state = {
+            n_sentences: parseInt(data.n_sentences),
+            title: data.title,
+        }
     }
 
     // ensure id is a proper integer
@@ -55,7 +65,7 @@ const handleRequest = frames(async (ctx) => {
         return badRequestFrame('Bad frame URL. id parameter string must be a valid integer. eg. "0"')
     }
     // ensure id doesn't overflow
-    if (id >= ctx.n_sentence) {
+    if (id >= ctx.state.n_sentences) {
         return badRequestFrame('Bad frame URL. id index is greater than number of frames available. Try start with cover frame')
     }
 
@@ -67,9 +77,11 @@ const handleRequest = frames(async (ctx) => {
     let hideText:boolean = false
     if (hideTextAsString && hideTextAsString === "true")  hideText = true
 
+    // store 2 params in ctx for convenience of passing
+    // this is not standard pattern
     ctx.id = id
     ctx.hideText = hideText
-    return loreFrame(ctx)
+    return await prepareLoreFrame(ctx)
 })
 
 export const GET = handleRequest

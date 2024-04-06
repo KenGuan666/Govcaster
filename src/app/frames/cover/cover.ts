@@ -3,16 +3,18 @@ import { coverFrame } from "./coverFrame"
 
 import { getProposalMetadata } from "../../api/supabase"
 
-export async function proposalCoverFrame(ctx:any) {
+export async function prepareCoverFrame(ctx:any) {
 
     const data = await getProposalMetadata(
         ctx.chain,
         ctx.proposalId,
     )
-    ctx.n_sentences = parseInt(data.n_sentences)
-    ctx.title = data.title
+    ctx.state = {
+        n_sentences: parseInt(data.n_sentences),
+        title: data.title,
+    }
     // if proposal not found, return a 404 page
-    if (!ctx.title) return proposalNotIngestedFrame()
+    if (!ctx.state || !ctx.state.title) return proposalNotIngestedFrame()
 
     return coverFrame(ctx)
 }

@@ -7,7 +7,7 @@ export function coverFrame(ctx:any) {
         image: (
             <div tw="flex flex-col">
                 <div tw="flex">
-                    {ctx.title}
+                    {ctx.state.title}
                 </div>
             </div>
         ),
@@ -19,5 +19,6 @@ export function coverFrame(ctx:any) {
                 Read Lore
             </Button>,
         ],
+        state: ctx.state,
     }
 }
