@@ -1,5 +1,6 @@
 import { Button } from "frames.js/next";
 import { frames } from "../frames";
+import { track } from '@vercel/analytics/server';
 import axios from "axios";
 
 const handleRequest = frames(async (ctx) => {
@@ -38,7 +39,8 @@ const handleRequest = frames(async (ctx) => {
     );
     
     const { imageUrl, sentence, next, n_sentences, dao } = data;
-      
+    track(`page-view-${proposalId}-${intId}`)
+
     return {
         imageOptions: {
             fonts: fonts

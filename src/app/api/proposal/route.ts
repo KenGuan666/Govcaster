@@ -30,6 +30,4 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
         'mintUrl': mintUrl,
         'primaryColor': primaryColor
     })
-
-
-}   
+}
