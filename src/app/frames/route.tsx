@@ -32,8 +32,7 @@ const handleRequest = frames(async (ctx) => {
     );
 
     const { title, chain, dao, imageUrls, primaryColor } = data;
-  
-
+    
     return {
       imageOptions: {
         fonts: fonts
@@ -43,7 +42,7 @@ const handleRequest = frames(async (ctx) => {
           <div style={{'display': 'flex', 'flexDirection': 'row', 'height': '50%', 'width': '100%', 'justifyContent': 'center'}}>
             {
               imageUrls.slice(0, 3).map((url: any, index: any) => (
-                <div key={index} style={{'backgroundImage': `url(${url})`, 'backgroundSize': 'contain', 
+                <div key={index} style={{'backgroundImage': `url(${url})`, 'backgroundSize': 'cover', 
                 'backgroundRepeat': 'no-repeat', 'backgroundPosition': 'center', 'height': '100%', 'width': '33.33%'}}></div>
               ))
             }
@@ -51,7 +50,7 @@ const handleRequest = frames(async (ctx) => {
           <div style={{'display': 'flex', 'flexDirection': 'row', 'height': '50%', 'width': '100%', 'justifyContent': 'center'}}>
             {
               imageUrls.slice(3, 6).map((url: any, index: any) => (
-                <div key={index} style={{'backgroundImage': `url(${url})`, 'backgroundSize': 'contain', 
+                <div key={index} style={{'backgroundImage': `url(${url})`, 'backgroundSize': 'cover', 
                 'backgroundRepeat': 'no-repeat', 'backgroundPosition': 'center', 'height': '100%', 'width': '33.33%'}}></div>
               ))
             }

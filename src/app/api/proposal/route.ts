@@ -18,12 +18,17 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
         imageUrls.push(frame['imageURL']);
     }
 
+    let mintUrl = data[0]['mintURL'];
+    let primaryColor = data[0]['primaryColor'];
+    
     return NextResponse.json({
         'n_sentences': data[0]['story'].split('.').length - 1,
         'title': data[0]['title'],
         'chain': data[0]['Chain'],
         'dao': data[0]['DAO'],
-        'imageUrls': imageUrls
+        'imageUrls': imageUrls,
+        'mintUrl': mintUrl,
+        'primaryColor': primaryColor
     })
 
 

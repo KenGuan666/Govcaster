@@ -38,14 +38,14 @@ const handleRequest = frames(async (ctx) => {
     );
     
     const { imageUrl, sentence, next, n_sentences, dao } = data;
-
+      
     return {
         imageOptions: {
             fonts: fonts
         },
         image: (
             <div style={{'display': 'flex', 'flexDirection': 'column', 'height': '100%', 'width': '100%', 'justifyContent': 'center'}}>
-                <div style={{'display': 'flex', 'flexDirection': 'column', 'height': '100%', 'width': '100%', 'backgroundImage': `url(${imageUrl})`, 'backgroundSize': 'contain', 'backgroundRepeat': 'no-repeat', 'backgroundPosition': 'center', 'color': 'white', 'fontWeight': 'bold', 'justifyContent': 'center'}}>
+                <div style={{'display': 'flex', 'flexDirection': 'column', 'height': '100%', 'width': '100%', 'backgroundImage': `url("${imageUrl}")`, 'backgroundSize': 'contain', 'backgroundRepeat': 'no-repeat', 'backgroundPosition': 'center', 'color': 'white', 'fontWeight': 'bold', 'justifyContent': 'center'}}>
                 </div>
                 <div style={{'position': 'absolute', 'zIndex': '100', 'height': '100%', 'width': '100%', 'display': 'flex', 'flexDirection': 'column', 'justifyContent': 'flex-end', 'padding': '60px', 'background': 'rgba(0, 0, 0, 0.7)', 'color': 'white', 'fontWeight': 'bold'}}>
                     <span style={{'fontWeight': 700}}>{intId+1}<span style={{'color': 'rgba(255, 255, 255, 0.4)'}}>/{n_sentences}</span></span>
