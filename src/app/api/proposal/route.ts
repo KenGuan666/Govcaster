@@ -13,11 +13,17 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
     const { data, error } = await supabase.from('proposals').select('*').eq('Proposal', proposalId);
     if (data === null) return NextResponse.json({ error: error }, { status: 500 });
     
+    let imageUrls = [];
+    for (let frame of data[0]['frames']) {
+        imageUrls.push(frame['imageURL']);
+    }
+
     return NextResponse.json({
         'n_sentences': data[0]['story'].split('.').length - 1,
         'title': data[0]['title'],
         'chain': data[0]['Chain'],
-        'dao': data[0]['DAO']
+        'dao': data[0]['DAO'],
+        'imageUrls': imageUrls
     })
 
 

@@ -35,6 +35,8 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
     let frame = frames[id];
     let sentence = frame['sentence'];
     let imageUrl = frame['imageURL'];
+    let mintUrl = frame['mintURL'];
+    let primaryColor = frame['primaryColor'];
     
     return NextResponse.json({
         'imageUrl': imageUrl,
@@ -43,5 +45,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
         'n_sentences': frames.length,
         'chain': chain,
         'dao': data[0]['DAO'],
+        'mintUrl': mintUrl,
+        'primaryColor': primaryColor
     })
 }
